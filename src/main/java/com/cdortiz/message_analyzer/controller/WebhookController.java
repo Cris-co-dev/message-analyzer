@@ -66,6 +66,6 @@ public class WebhookController {
      */
     @GetMapping("/health")
     public String health() {
-        return "OK";
+        return "Correct";
     }
 }
