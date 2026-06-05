@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: message-analyzer
+alert:
+  keywords:
+    - Urgente
+    - Prioritario
+    - Crítico
+    - Inmediato
+    - Apremiante
+    - Imperativo
+    - Inaplazable
+    - Importante
+    - Prioridad alta
+    - Atención inmediata
+    - Acción requerida
+    - Tiempo sensible
+    - De máxima prioridad
+    - Emergente
+    - Preferente
+    - Error
+    - Falla
+    - Incidencia
+    - Problema
+    - Defecto
+    - Anomalía
+    - Excepción
+    - Inconveniente
+    - Bug
+    - Mal funcionamiento
+    - Interrupción
+    - Desviación
+    - Error técnico
+    - Comportamiento inesperado
+    - Evento de fallo
+    - Ayuda
+    - Soporte
+    - Asistencia
+    - Colaboración
+    - Acompañamiento
+    - Orientación
+    - Asesoría
+    - Respaldo
+    - Atención
+    - Apoyo
+    - Servicio
+    - Consulta
+    - Guía
+    - Intervención
+    - Cooperación
