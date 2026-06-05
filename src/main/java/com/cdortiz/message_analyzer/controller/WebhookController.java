@@ -54,6 +54,16 @@ public class WebhookController {
         return ResponseEntity.ok(alertEvaluatorService.evaluate(request.message()));
     }
 
+    /**
+     * Liveness probe endpoint used by container orchestrators and uptime
+     * monitors to verify that the application context is up.
+     *
+     * <p>Always returns {@code 200 OK} with the literal body {@code "OK"};
+     * it does not perform any external dependency check (no DB, no
+     * downstream services).
+     *
+     * @return the constant string {@code "OK"}
+     */
     @GetMapping("/health")
     public String health() {
         return "OK";
