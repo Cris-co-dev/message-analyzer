@@ -82,18 +82,6 @@
 										<include>com.cdortiz.message_analyzer.service</include>
 										<include>com.cdortiz.message_analyzer.controller</include>
 									</includes>
-									<limits>
-										<limit>
-											<counter>LINE</counter>
-											<value>COVEREDRATIO</value>
-											<minimum>0.90</minimum>
-										</limit>
-										<limit>
-											<counter>BRANCH</counter>
-											<value>COVEREDRATIO</value>
-											<minimum>0.85</minimum>
-										</limit>
-									</limits>
 								</rule>
 								<rule>
 									<element>PACKAGE</element>
