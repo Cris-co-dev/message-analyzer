@@ -61,3 +61,10 @@ jobs:
         run: |
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+      - name: Force ECS deployment
+        run: |
+          aws ecs update-service \
+            --cluster default \
+            --service spring-alert-api-e642 \
+            --force-new-deploymen
