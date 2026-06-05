@@ -67,4 +67,4 @@ jobs:
           aws ecs update-service \
             --cluster default \
             --service spring-alert-api-e642 \
-            --force-new-deploymen
+            --force-new-deployment
