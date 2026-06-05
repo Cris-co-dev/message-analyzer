@@ -56,7 +56,7 @@ jobs:
       - name: Download task definition
         run: |
           aws ecs describe-task-definition \
-            --task-definition spring-alert-api \
+            --task-definition default-spring-alert-api-e642 \
             --query taskDefinition \
             > task-definition.json
 
@@ -65,7 +65,7 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: task-definition.json
-          container-name: spring-alert-api
+          container-name: Main
           image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy ECS task definition
