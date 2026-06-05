@@ -17,6 +17,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -185,5 +186,47 @@ class WebhookControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error").value("Bad Request"))
                 .andExpect(jsonPath("$.message").value("Malformed JSON request"));
+    }
+
+    // ---- CTRL-08 (HttpRequestMethodNotSupportedException envelope) ----
+
+    @Test
+    @DisplayName("CTRL-08: GET on /webhook (POST-only) returns 405 with the Method Not Allowed envelope")
+    void get_onPostOnlyEndpoint_returns405WithMethodNotAllowedEnvelope() throws Exception {
+        // Arrange
+        given(alertEvaluatorService.evaluate(anyString()))
+                .willReturn(TestFixtures.alertFalseResponse());
+
+        // Act + Assert
+        mockMvc.perform(get("/webhook"))
+                .andExpect(status().isMethodNotAllowed())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.error").value("Method Not Allowed"))
+                .andExpect(jsonPath("$.message").value("HTTP method not allowed for this endpoint"))
+                .andExpect(jsonPath("$.timestamp").exists());
+    }
+
+    // ---- CTRL-09 (NoResourceFoundException envelope) ----
+
+    @Test
+    @DisplayName("CTRL-09: POST to an unknown path returns 404 with the Not Found envelope")
+    void post_unknownPath_returns404WithNotFoundEnvelope() throws Exception {
+        // Arrange
+        given(alertEvaluatorService.evaluate(anyString()))
+                .willReturn(TestFixtures.alertFalseResponse());
+
+        // Act + Assert
+        // Spring 6.1+ (Boot 3.5) raises NoResourceFoundException from the static-resource
+        // fallback for any path that does not match a registered handler. The advice
+        // maps both NoResourceFoundException and NoHandlerFoundException to the same 404
+        // envelope, so the test asserts the user-visible contract only.
+        mockMvc.perform(post("/webhook/nonexistent")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(TestFixtures.webhookRequestJson(objectMapper, "Desconocido", "Hola, ¿cómo están?")))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.error").value("Not Found"))
+                .andExpect(jsonPath("$.message").value("Resource not found"))
+                .andExpect(jsonPath("$.timestamp").exists());
     }
 }
